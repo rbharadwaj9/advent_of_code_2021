@@ -1,0 +1,35 @@
+import numpy as np
+import sys
+
+def _update_num_ones(num_ones: np.ndarray, input_str: str):
+    for i, c in enumerate(input_str):
+        num_ones[0, i] += (1 if c == '1' else 0)
+    return num_ones
+
+
+def main(args=sys.argv):
+    try:
+        filename = args[1]
+    except IndexError:
+        print("Please provide file")
+        sys.exit()
+
+    num_ones = np.zeros((1, 10))
+    with open(filename, 'r') as f:
+        total_count = 0
+        checked = False
+        for val in f:
+
+            # ensure that num ones is wide enough. Also check this only once
+            if not checked and len(val) != num_ones.shape[1]:
+                checked = True
+                num_ones = np.zeros((1, len(val)))
+            checked = True
+
+            num_ones = _update_num_ones(num_ones, val)
+
+    print(num_ones)
+
+
+if __name__ == "__main__":
+    main()
